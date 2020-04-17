@@ -12,21 +12,77 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiZGJ1cmJhY2gxOTgyIiwiYSI6ImNrNjhhbXNwbzAzMWczcG56azQ2anhlcmsifQ.oIeM3Zzm_nFsu-dbACDbZg";
 
 function Main() {
-  const mapboxElRef = useRef(null); // DOM element to render map
+    const mapboxElRef = useRef(null); // DOM element to render map
+
+    const fetcher = (url) =>
+    fetch(url)
+        .then((r) => r.json())
+        .then((data) =>
+        data.map((point, index) => ({
+            type: "Feature",
+            geometry: {
+            type: "Point",
+            coordinates: [
+                point.coordinates.longitude,
+                point.coordinates.latitude,
+            ],
+            },
+            properties: {
+            id: index, // unique identifier in this case the index
+            country: point.country,
+            province: point.province,
+            cases: point.stats.confirmed,
+            deaths: point.stats.deaths,
+            },
+        }))
+    );
+
+    const { data } = useSWR("https://corona.lmao.ninja/v2/jhucsse", fetcher);
 
   // Initialize our map
-  useEffect(() => {
-    // You can store the map instance with useRef too
-    const map = new mapboxgl.Map({
-      container: mapboxElRef.current,
-      style: "mapbox://styles/notalemesa/ck8dqwdum09ju1ioj65e3ql3k",
-      center: [16, 27], // initial geo location
-      zoom: 2, // initial zoom
-    });
+    useEffect(() => {
+        // You can store the map instance with useRef too
+    if (data) {
+        const map = new mapboxgl.Map({
+            container: mapboxElRef.current,
+            style: "mapbox://styles/notalemesa/ck8dqwdum09ju1ioj65e3ql3k",
+            center: [16, 27], // initial geo location
+            zoom: 2, // initial zoom
+        });
 
-    // Add navigation controls to the top right of the canvas
-    map.addControl(new mapboxgl.NavigationControl());
-  }, []);
+      // Call this method when the map is loaded
+      map.once("load", function() {
+        // Add our SOURCE
+        // with id "points"
+        map.addSource("points", {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: data
+          }
+        });
+        map.addControl(new mapboxgl.NavigationControl());
+        // Add our layer
+        map.addLayer({
+          id: "circles",
+          source: "points", // this should be the id of the source
+          type: "circle",
+          // paint properties
+          paint: {
+            "circle-opacity": 0.75,
+            "circle-stroke-width": 1,
+            "circle-radius": 4,
+            "circle-color": "#FFEB3B"
+          }
+        });
+      });
+    }
+  }, [data]);
+
+
+//     // Add navigation controls to the top right of the canvas
+//     map.addControl(new mapboxgl.NavigationControl());
+//   }, []);
 
   return (
     <div className="App">
