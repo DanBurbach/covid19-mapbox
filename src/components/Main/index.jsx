@@ -69,17 +69,28 @@ function Main() {
           paint: {
             'circle-opacity': 0.75,
             'circle-stroke-width': 1,
-            'circle-color': '#FFEB3B',
+            'circle-color': [
+                'interpolate',
+                ['linear'],
+                ['get', 'cases'],
+                1, '#ffffb2',
+                5000, '#fed976',
+                10000, '#feb24c',
+                25000, '#fd8d3c',
+                50000, '#fc4e2a',
+                75000, '#e31a1c',
+                100000, '#b10026'
+            ],
             'circle-radius': [
-              'interpolate',
-              ['linear'],
-              ['get', 'cases'],
-              1, 4,
-              1000, 8,
-              4000, 10,
-              8000, 14,
-              12000, 18,
-              100000, 40
+                'interpolate',
+                ['linear'],
+                ['get', 'cases'],
+                1, 4,
+                1000, 8,
+                4000, 10,
+                8000, 14,
+                12000, 18,
+                100000, 40
             ],
           }
         });
