@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
-import useSWR from 'swr'; // React hook to fetch the data
-import lookup from 'country-code-lookup'; // npm module to get ISO Code for countries
+import useSWR from 'swr';
+import lookup from 'country-code-lookup';
 
+import Covid19_ticker from './ticker';
 import '../../assets/Main.scss';
 
 // Mapbox css - needed to make tooltips work later in this article
@@ -151,6 +152,9 @@ function Main() {
       <div className='mapContainer'>
         {/* Assigned Mapbox container */}
         <div className='mapBox' ref={mapboxElRef} />
+      </div>
+      <div className='newsTicker'>
+        <Covid19_ticker />
       </div>
     </div>
   );
