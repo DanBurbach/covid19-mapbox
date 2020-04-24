@@ -1,11 +1,11 @@
 import React, { Component, useState, useEffect } from "react";
-import $ from "jquery";
+// import $ from "jquery";
 import Ticker from "react-ticker";
 import PageVisibility from "react-page-visibility";
 
 const USER_ID = "d359bea4502a44948cc3ee7a77b2afbf";
 
-class Covid19_ticker extends Component {
+class Covid19Ticker extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,14 +22,16 @@ class Covid19_ticker extends Component {
     this.makeAPICall();
   }
 
-  makeAPICall = () => {
-    $.getJSON(
-      "https://newsapi.org/v2/everything?q=covid19&apiKey=" + `${USER_ID}`
+  async makeAPICall() {
+    await fetch(
+      "https://newsapi.org/v2/everything?q=covid19&apiKey=" + USER_ID
     )
     .then(({ results }) => 
         this.setState({ 
             newsList: results 
         }));
+        console.log("newsList should be: " + this.state.newsList);
+        
   };
 
   getNewsFromAPI = () => {
@@ -78,6 +80,6 @@ class Covid19_ticker extends Component {
   }
 }
 
-export default Covid19_ticker;
+export default Covid19Ticker;
 
 

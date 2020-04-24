@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import useSWR from 'swr';
 import lookup from 'country-code-lookup';
 
-import Covid19_ticker from './ticker';
+import Covid19Ticker from './ticker';
 import '../../assets/Main.scss';
 
 // Mapbox css - needed to make tooltips work later in this article
@@ -154,7 +154,7 @@ function Main() {
         <div className='mapBox' ref={mapboxElRef} />
       </div>
       <div className='newsTicker'>
-        <Covid19_ticker />
+        <Covid19Ticker />
       </div>
     </div>
   );
