@@ -10,7 +10,8 @@ class Covid19Ticker extends Component {
     super(props);
     this.state = {
       pageIsVisible: false,
-      newsList: []
+      newsList: [],
+      list: []
     };
     this.newsTicker = this.newsTicker.bind(this);
     this.makeAPICall = this.makeAPICall.bind(this);
@@ -26,20 +27,41 @@ class Covid19Ticker extends Component {
     await fetch(
       "https://newsapi.org/v2/everything?q=covid19&apiKey=" + USER_ID
     )
-    .then(({ results }) => 
-        this.setState({ 
-            newsList: results 
-        }));
-        console.log("newsList should be: " + this.state.newsList);
-        
+    .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          newsList: data
+        })
+        console.log(this.state.newsList);
+        const arrayList = this.state.newsList.articles;
+        console.log(arrayList);
+        let listArray = [];
+        for (var i = 0; i < arrayList.length; i++) {
+          if (arrayList.hasOwnProperty(i)) {
+            listArray.push(arrayList[i].title);
+          }
+        }
+        let filteredNewsList = listArray.filter(function(el) {
+          return el != null;
+        })
+        this.setState({
+          list: filteredNewsList
+        })
+        console.log(this.state.list);
+      
+      });
+
+    
   };
 
   getNewsFromAPI = () => {
     const [news, setNews] = useState("");
     useEffect(() => {
-        const newsCall = this.state.newsList;
+      const newsCall = this.state.list;
       async function fetchData() {
-        const newsFromAPI = newsCall;
+        const newsFromAPI = await newsCall;
         setNews(newsFromAPI);
       }
       fetchData();
@@ -64,9 +86,9 @@ class Covid19Ticker extends Component {
       <PageVisibility 
         onChange={handleVisibilityChange}>
         {pageIsVisible && 
-            <Ticker>{() => 
-                <this.getNewsFromAPI />
-            }</Ticker>}
+            <Ticker>
+              { () => <this.getNewsFromAPI /> }
+            </Ticker>}
       </PageVisibility>
     );
   };
