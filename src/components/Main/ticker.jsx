@@ -11,7 +11,8 @@ class Covid19Ticker extends Component {
     this.state = {
       pageIsVisible: false,
       newsList: [],
-      list: []
+      list: [],
+      listLink: []
     };
     this.newsTicker = this.newsTicker.bind(this);
     this.makeAPICall = this.makeAPICall.bind(this);
@@ -35,25 +36,37 @@ class Covid19Ticker extends Component {
           newsList: data
         })
         console.log(this.state.newsList);
+
         const arrayList = this.state.newsList.articles;
+
         console.log(arrayList);
+
         let listArray = [];
+        let linkArray = [];
+
         for (var i = 0; i < arrayList.length; i++) {
           if (arrayList.hasOwnProperty(i)) {
             listArray.push(arrayList[i].title);
+            linkArray.push(arrayList[i].url);
           }
         }
-        let filteredNewsList = listArray.filter(function(el) {
-          return el != null;
-        })
-        this.setState({
-          list: filteredNewsList
-        })
-        console.log(this.state.list);
-      
-      });
 
-    
+        let filteredTitles = listArray.filter(function (el) {
+          return el != null;
+        });
+
+        let filteredLinks = linkArray.filter(function (el) {
+          return el != null;
+        });
+
+        this.setState({
+          list: filteredTitles,
+          listLink: filteredLinks,
+        });
+        
+        console.log(this.state.list);
+        console.log(this.state.listLink);
+      });
   };
 
   getNewsFromAPI = () => {
@@ -69,9 +82,13 @@ class Covid19Ticker extends Component {
     // A placeholder is needed, to tell react-ticker, that width and height might have changed
     // It uses MutationObserver internally
     return news ? (
-      <p style={{ whiteSpace: "nowrap" }}>{news.join(" +++ ")} +++ </p>
+      <p style={{ whiteSpace: "nowrap" }}>
+        {news.join(" ++ ")} ++ 
+      </p>
     ) : (
-      <p style={{ visibility: "hidden" }}>Placeholder</p>
+      <p style={{ visibility: "hidden" }}>
+        Placeholder
+      </p>
     );
   };
 
