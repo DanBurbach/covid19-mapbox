@@ -12,7 +12,8 @@ class Covid19Ticker extends Component {
       pageIsVisible: false,
       newsList: [],
       list: [],
-      listLink: []
+      listLink: [],
+      listImages: []
     };
     this.newsTicker = this.newsTicker.bind(this);
     this.makeAPICall = this.makeAPICall.bind(this);
@@ -43,11 +44,13 @@ class Covid19Ticker extends Component {
 
         let listArray = [];
         let linkArray = [];
+        let imageArray = [];
 
         for (var i = 0; i < arrayList.length; i++) {
           if (arrayList.hasOwnProperty(i)) {
             listArray.push(arrayList[i].title);
             linkArray.push(arrayList[i].url);
+            imageArray.push(arrayList[i].urlToImage);
           }
         }
 
@@ -59,13 +62,19 @@ class Covid19Ticker extends Component {
           return el != null;
         });
 
+        let filteredImages = linkArray.filter(function (el) {
+          return el != null;
+        });
+
         this.setState({
           list: filteredTitles,
           listLink: filteredLinks,
+          listImages: filteredImages
         });
         
         console.log(this.state.list);
         console.log(this.state.listLink);
+        console.log(this.state.listImages);
       });
   };
 
