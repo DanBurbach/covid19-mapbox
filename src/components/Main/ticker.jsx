@@ -32,50 +32,53 @@ class Covid19Ticker extends Component {
     .then((response) => {
         return response.json();
       })
-      .then((data) => {
-        this.setState({
-          newsList: data
-        })
-        console.log(this.state.newsList);
+    .then((data) => {
+      this.setState({
+        newsList: data
+      })
+      console.log(this.state.newsList);
 
-        const arrayList = this.state.newsList.articles;
+      const arrayList = this.state.newsList.articles;
 
-        console.log(arrayList);
+      console.log(arrayList);
 
-        let listArray = [];
-        let linkArray = [];
-        let imageArray = [];
+      let listArray = [];
+      let linkArray = [];
+      let imageArray = [];
 
-        for (var i = 0; i < arrayList.length; i++) {
-          if (arrayList.hasOwnProperty(i)) {
-            listArray.push(arrayList[i].title);
-            linkArray.push(arrayList[i].url);
-            imageArray.push(arrayList[i].urlToImage);
-          }
+      for (var i = 0; i < arrayList.length; i++) {
+        if (arrayList.hasOwnProperty(i)) {
+          listArray.push(arrayList[i].title);
+          linkArray.push(arrayList[i].url);
+          imageArray.push(arrayList[i].urlToImage);
         }
+      }
 
-        let filteredTitles = listArray.filter(function (el) {
-          return el != null;
-        });
-
-        let filteredLinks = linkArray.filter(function (el) {
-          return el != null;
-        });
-
-        let filteredImages = linkArray.filter(function (el) {
-          return el != null;
-        });
-
-        this.setState({
-          list: filteredTitles,
-          listLink: filteredLinks,
-          listImages: filteredImages
-        });
-        
-        console.log(this.state.list);
-        console.log(this.state.listLink);
-        console.log(this.state.listImages);
+      let filteredTitles = listArray.filter(function (el) {
+        return el != null;
       });
+
+      let filteredLinks = linkArray.filter(function (el) {
+        return el != null;
+      });
+
+      let filteredImages = linkArray.filter(function (el) {
+        return el != null;
+      });
+
+      this.setState({
+        list: filteredTitles,
+        listLink: filteredLinks,
+        listImages: filteredImages
+      });
+      
+      console.log(this.state.list);
+      console.log(this.state.listLink);
+      console.log(this.state.listImages);
+    })
+    .catch((error) => {
+    console.error('There has been a problem with your fetch operation:', error);
+  });
   };
 
   getNewsFromAPI = () => {
