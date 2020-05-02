@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 // import $ from "jquery";
 import Ticker from "react-ticker";
 import PageVisibility from "react-page-visibility";
+import '../../assets/ticker.css'
 
 const USER_ID = "d359bea4502a44948cc3ee7a77b2afbf";
 
@@ -83,20 +84,29 @@ class Covid19Ticker extends Component {
 
   getNewsFromAPI = () => {
     const [news, setNews] = useState("");
+    const [links, setLinks] = useState("");
     useEffect(() => {
       const newsCall = this.state.list;
+      const linkCall = this.state.listLink;
       async function fetchData() {
         const newsFromAPI = await newsCall;
+        const linksFromAPI = await linkCall;
         setNews(newsFromAPI);
+        setLinks(linksFromAPI);
       }
       fetchData();
     }, []);
     // A placeholder is needed, to tell react-ticker, that width and height might have changed
     // It uses MutationObserver internally
-    return news ? (
-      <p style={{ whiteSpace: "nowrap" }}>
-        {news.join(" ++ ")} ++ 
-      </p>
+    return news && links ? (
+      <div className="renderedTicker">
+        <p style={{ whiteSpace: "nowrap"
+          }}>
+              <a href={links}>
+                {news.join(" - ")} -
+              </a>
+          </p>
+        </div>
     ) : (
       <p style={{ visibility: "hidden" }}>
         Placeholder
@@ -124,9 +134,9 @@ class Covid19Ticker extends Component {
 
   render() {
     return (
-        <div>
-            <this.newsTicker />
-        </div>
+      <div>
+          <this.newsTicker />
+      </div>
     );
   }
 }
