@@ -26,7 +26,7 @@ class Covid19Ticker extends Component {
     this.makeAPICall();
   }
 
-  async makeAPICall() {
+  async makeAPICall(){
     await fetch(
       "https://newsapi.org/v2/everything?q=covid19&apiKey=" + USER_ID
     )
@@ -85,6 +85,7 @@ class Covid19Ticker extends Component {
   getNewsFromAPI = () => {
     const [news, setNews] = useState("");
     const [links, setLinks] = useState("");
+    
     useEffect(() => {
       const newsCall = this.state.list;
       const linkCall = this.state.listLink;
@@ -102,9 +103,9 @@ class Covid19Ticker extends Component {
       <div className="renderedTicker">
         <p style={{ whiteSpace: "nowrap"
           }}>
-              <a href={links}>
+              {/* <a href={links}> */}
                 {news.join(" - ")} -
-              </a>
+              {/* </a> */}
           </p>
         </div>
     ) : (
